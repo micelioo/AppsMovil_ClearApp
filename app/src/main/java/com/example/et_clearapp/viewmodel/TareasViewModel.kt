@@ -1,22 +1,20 @@
 package com.example.et_clearapp.viewmodel
 
-import androidx.compose.runtime.getValue
+import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.et_clearapp.model.Prioridad
 import com.example.et_clearapp.model.Tarea
+import com.example.et_clearapp.network.RetrofitInstance
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class TareasViewModel : ViewModel() {
 
-    var tareas: List<Tarea> by mutableStateOf(emptyList())
+    var tareas = mutableStateListOf<Tarea>()
         private set
-
-    var mostrarDialogo: Boolean by mutableStateOf(false)
-        private set
-
-    private var nextId: Long = 1L
 
     val pendientesCount: Int
         get() = tareas.count { !it.done }
@@ -24,42 +22,66 @@ class TareasViewModel : ViewModel() {
     val completadasCount: Int
         get() = tareas.count { it.done }
 
+    var mostrarDialogo = mutableStateOf(false)
+        private set
+
     fun abrirDialogo() {
-        mostrarDialogo = true
+        mostrarDialogo.value = true
     }
 
     fun cerrarDialogo() {
-        mostrarDialogo = false
+        mostrarDialogo.value = false
     }
 
-    fun agregarTarea(titulo: String, fecha: LocalDate, prioridad: Prioridad) {
-        val nueva = Tarea(
-            id = nextId++,
+    fun guardarTarea(
+        titulo: String,
+        fecha: LocalDate,
+        prioridad: Prioridad,
+        usuarioId: Long
+    ) {
+        val nuevaTarea = Tarea(
             title = titulo,
             dueDate = fecha,
             prioridad = prioridad,
             done = false
         )
-        tareas = tareas + nueva
-        mostrarDialogo = false
-    }
 
-    fun toggleTarea(tarea: Tarea) {
-        val id = tarea.id ?: return
-        tareas = tareas.map { t ->
-            if (t.id == id) t.copy(done = !t.done) else t
+        viewModelScope.launch {
+            try {
+                val response = RetrofitInstance.tareasApi.guardar(
+                    usuarioId = usuarioId,
+                    tarea = nuevaTarea
+                )
+
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        tareas.add(it)
+                        Log.d("TAREA", "Guardada OK")
+                    }
+                } else {
+                    Log.e("TAREA", "Error backend ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.e("TAREA", "Excepción", e)
+            }
         }
     }
 
-    fun editarTarea(editada: Tarea) {
-        val id = editada.id ?: return
-        tareas = tareas.map { t ->
-            if (t.id == id) editada else t
+    fun toggleTarea(tarea: Tarea) {
+        val index = tareas.indexOfFirst { it.id == tarea.id }
+        if (index != -1) {
+            tareas[index] = tarea.copy(done = !tarea.done)
+        }
+    }
+
+    fun editarTarea(tarea: Tarea) {
+        val index = tareas.indexOfFirst { it.id == tarea.id }
+        if (index != -1) {
+            tareas[index] = tarea
         }
     }
 
     fun eliminarTarea(tarea: Tarea) {
-        val id = tarea.id ?: return
-        tareas = tareas.filterNot { it.id == id }
+        tareas.remove(tarea)
     }
 }

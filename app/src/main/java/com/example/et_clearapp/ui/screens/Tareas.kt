@@ -37,6 +37,7 @@ fun Tareas(
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier
 ) {
+    val usuarioId = 1L
     val tareas = viewModel.tareas
     var tareaAEditar by remember { mutableStateOf<Tarea?>(null) }
     var tareaAEliminar by remember { mutableStateOf<Tarea?>(null) }
@@ -53,10 +54,8 @@ fun Tareas(
                 bottom = bottomInset + 80.dp
             )
     ) {
+        Column(modifier = Modifier.fillMaxSize()) {
 
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
             Text(
                 text = "Tareas",
                 style = MaterialTheme.typography.headlineSmall
@@ -67,27 +66,23 @@ fun Tareas(
             if (tareas.isEmpty()) {
                 Text(
                     text = "Aún no tienes tareas.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(top = 4.dp)
+                    style = MaterialTheme.typography.bodyMedium
                 )
             } else {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f, fill = true),
-                    contentPadding = PaddingValues(
-                        top = 8.dp,
-                        bottom = 96.dp
-                    ),
+                        .weight(1f),
+                    contentPadding = PaddingValues(bottom = 96.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(
                         items = tareas,
                         key = { it.id ?: 0L }
-                    ) { t ->
+                    ) { tarea ->
                         ItemTareaCard(
-                            tarea = t,
-                            onToggle = { tarea -> viewModel.toggleTarea(tarea) },
+                            tarea = tarea,
+                            onToggle = { viewModel.toggleTarea(it) },
                             onEditar = { tareaAEditar = it },
                             onEliminar = { tareaAEliminar = it }
                         )
@@ -103,35 +98,40 @@ fun Tareas(
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(bottom = 16.dp, end = 16.dp)
+                .padding(16.dp)
         ) {
             Text("+")
         }
     }
 
-    if (viewModel.mostrarDialogo) {
+    if (viewModel.mostrarDialogo.value) {
         AgregarTarea(
             alCerrar = { viewModel.cerrarDialogo() },
             alGuardar = { titulo, fecha, prioridad ->
-                viewModel.agregarTarea(titulo, fecha, prioridad)
+                viewModel.guardarTarea(
+                    titulo = titulo,
+                    fecha = fecha,
+                    prioridad = prioridad,
+                    usuarioId = usuarioId
+                )
+                viewModel.cerrarDialogo()
             }
         )
     }
 
-    tareaAEditar?.let { t ->
+
+    tareaAEditar?.let { tarea ->
         AgregarTarea(
+            esEdicion = true,
+            tareaInicial = tarea,
             alCerrar = { tareaAEditar = null },
             alGuardar = { _, _, _ -> },
-            esEdicion = true,
-            tareaInicial = t,
             alGuardarEdicion = { id, titulo, fecha, prioridad ->
                 viewModel.editarTarea(
-                    Tarea(
-                        id = id,
+                    tarea.copy(
                         title = titulo,
                         dueDate = fecha,
-                        prioridad = prioridad,
-                        done = t.done
+                        prioridad = prioridad
                     )
                 )
                 tareaAEditar = null
@@ -139,15 +139,15 @@ fun Tareas(
         )
     }
 
-    tareaAEliminar?.let { t ->
+    tareaAEliminar?.let { tarea ->
         AlertDialog(
             onDismissRequest = { tareaAEliminar = null },
             title = { Text("Eliminar tarea") },
-            text = { Text("¿Seguro/a que quieres eliminar \"${t.title}\"?") },
+            text = { Text("¿Seguro/a que quieres eliminar \"${tarea.title}\"?") },
             confirmButton = {
                 TextButton(
                     onClick = {
-                        viewModel.eliminarTarea(t)
+                        viewModel.eliminarTarea(tarea)
                         tareaAEliminar = null
                     }
                 ) {

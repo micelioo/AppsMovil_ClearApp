@@ -11,17 +11,12 @@ import kotlinx.coroutines.launch
 class EstadoAnimoViewModel(
     private val repo: MoodDataStore
 ) : ViewModel() {
-
-    // estado interno mutable
     private val _uiState = MutableStateFlow(
         EstadoAnimoUiState()
     )
-
-    // estado público que observa la UI
     val uiState: StateFlow<EstadoAnimoUiState> = _uiState
 
     init {
-        // cargamos desde DataStore al iniciar
         viewModelScope.launch {
             repo.moodSeleccionadoFlow
                 .combine(repo.comentarioFlow) { moodGuardado, comentarioGuardado ->
@@ -55,7 +50,6 @@ class EstadoAnimoViewModel(
     fun guardarEntrada() {
         val current = _uiState.value
 
-        // 1. validación
         if (current.moodSeleccionado == null) {
             _uiState.value = current.copy(
                 errorMood = "Selecciona una emoción"
@@ -70,7 +64,6 @@ class EstadoAnimoViewModel(
             return
         }
 
-        // 2. persistencia local con DataStore
         viewModelScope.launch {
             repo.guardarMood(current.moodSeleccionado)
             repo.guardarComentario(current.comentario)
