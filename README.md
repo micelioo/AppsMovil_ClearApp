@@ -31,7 +31,11 @@ La app permite a los usuarios iniciar sesión, gestionar tareas con prioridades 
 
 ## Arquitectura del proyecto
 
-### Frontend (Android)
+<h2>🏗️ Arquitectura del proyecto</h2>
+
+<h3> Frontend (Android Studio)</h3>
+
+<pre>
 app/
 ├── data/
 │   ├── model/        Modelos (Usuario, Tarea, Diario, Prioridad)
@@ -43,14 +47,17 @@ app/
 │   └── theme/        Tipografías, colores y estilos
 ├── viewmodel/        ViewModels (MVVM)
 └── session/          Manejo de sesión del usuario
+</pre>
 
+<h3>Backend (Spring Boot)</h3>
 
-### Backend (Spring Boot)
+<pre>
 src/main/java/
 ├── controller/   Controladores REST
 ├── service/      Lógica de negocio
 ├── repository/   JPA Repositories
 └── model/        Entidades JPA
+</pre>
 
 
 ## Endpoints principales (Backend)
@@ -144,3 +151,4 @@ Las contribuciones son bienvenidas:
 
 ## Licencia
 Proyecto académico desarrollado con fines educativos.
+
