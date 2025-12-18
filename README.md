@@ -31,7 +31,7 @@ La app permite a los usuarios iniciar sesión, gestionar tareas con prioridades 
 
 ## Arquitectura del proyecto
 
-<h2>🏗️ Arquitectura del proyecto</h2>
+<h2>Arquitectura del proyecto</h2>
 
 <h3> Frontend (Android Studio)</h3>
 
@@ -151,4 +151,3 @@ Las contribuciones son bienvenidas:
 
 ## Licencia
 Proyecto académico desarrollado con fines educativos.
-
