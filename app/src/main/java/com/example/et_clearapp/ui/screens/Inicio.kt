@@ -56,7 +56,7 @@ fun Inicio(
     var headerVisible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { headerVisible = true }
 
-    // saludo según la hora
+    // saludo según hora
     val saludo = remember {
         val h = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         when (h) {
@@ -116,12 +116,12 @@ fun Inicio(
 
         Spacer(Modifier.height(12.dp))
 
-        // bloque de clima usando la API
+        // bloque de clima usando API
         ClimaInicioSection()
 
         Spacer(Modifier.height(16.dp))
 
-        // resumen del día (tareas + agua)
+        // resumen del día
         ResumenDiaCard(
             pendientes = pendientesHoy,
             completadas = completadasHoy,
@@ -131,7 +131,7 @@ fun Inicio(
 
         Spacer(Modifier.height(12.dp))
 
-        // grid de tarjetas de navegación
+        // grid tarjetas de navegación
         cards.chunked(2).forEach { fila ->
             Row(
                 modifier = Modifier.fillMaxWidth(),

@@ -30,8 +30,6 @@ fun Diario(
 ) {
     var texto by rememberSaveable { mutableStateOf("") }
     var fotoUri by rememberSaveable { mutableStateOf<String?>(null) }
-
-    // observamos las entradas para, al menos, mostrar cuántas hay
     val entradas = viewModel.entradas
 
     val pickImageLauncher = rememberLauncherForActivityResult(

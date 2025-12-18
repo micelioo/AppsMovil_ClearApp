@@ -50,7 +50,6 @@ fun AppNavigation(
         startDestination = Ruta.Login.path
     ) {
 
-        // login
         composable(Ruta.Login.path) {
             Login(
                 onLoginExitoso = {
@@ -61,7 +60,6 @@ fun AppNavigation(
             )
         }
 
-        // inicio
         composable(Ruta.Inicio.path) {
             Inicio(
                 irATareas = { navController.navigate(Ruta.Tareas.path) },
@@ -75,7 +73,6 @@ fun AppNavigation(
             )
         }
 
-        // tareas
         composable(Ruta.Tareas.path) {
             Tareas(
                 viewModel = tareasViewModel,
@@ -83,13 +80,11 @@ fun AppNavigation(
             )
         }
 
-        // agua
         composable(Ruta.Agua.path) {
             Agua(viewModel = aguaViewModel,
                 paddingValues = paddingValues)
         }
 
-        // ánimo
         composable(Ruta.EstadoAnimo.path) {
             EstadoAnimo(
                 viewModel = estadoAnimoViewModel,
@@ -97,7 +92,6 @@ fun AppNavigation(
             )
         }
 
-        // diario
         composable(Ruta.Diario.path) {
             Diario(viewModel = diarioViewModel,
                 paddingValues = paddingValues)

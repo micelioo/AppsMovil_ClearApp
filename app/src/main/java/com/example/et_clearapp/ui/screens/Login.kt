@@ -152,7 +152,7 @@ fun Login(
             }
 
             Text(
-                text = "Demo sugerido (si corriste DataLoader):\nemail: fran@clear.cl\npassword: holis123",
+                text = "email: fran@clear.cl\npassword: holis123",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.outline,
                 textAlign = TextAlign.Center
