@@ -34,22 +34,24 @@ La app permite a los usuarios iniciar sesión, gestionar tareas con prioridades 
 ### Frontend (Android)
 app/
 ├── data/
-│ ├── model/ Modelos (Usuario, Tarea, Diario, Prioridad)
-│ ├── network/ Retrofit, APIs, adapters de fechas
-│ └── repository/ Acceso a datos
+│   ├── model/        Modelos (Usuario, Tarea, Diario, Prioridad)
+│   ├── network/      Retrofit, APIs, adapters de fechas
+│   └── repository/   Acceso a datos
 ├── ui/
-│ ├── screens/ Pantallas Compose (Login, Tareas, Diario, etc.)
-│ ├── components/ Componentes reutilizables
-│ └── theme/ Tipografías, colores y estilos
-├── viewmodel/ ViewModels (MVVM)
-└── session/ Manejo de sesión del usuario
+│   ├── screens/      Pantallas Compose (Login, Tareas, Diario, etc.)
+│   ├── components/   Componentes reutilizables
+│   └── theme/        Tipografías, colores y estilos
+├── viewmodel/        ViewModels (MVVM)
+└── session/          Manejo de sesión del usuario
+
 
 ### Backend (Spring Boot)
 src/main/java/
-├── controller/ Controladores REST
-├── service/ Lógica de negocio
-├── repository/ JPA Repositories
-└── model/ Entidades JPA
+├── controller/   Controladores REST
+├── service/      Lógica de negocio
+├── repository/   JPA Repositories
+└── model/        Entidades JPA
+
 
 ## Endpoints principales (Backend)
 POST /api/usuarios/login
@@ -142,4 +144,3 @@ Las contribuciones son bienvenidas:
 
 ## Licencia
 Proyecto académico desarrollado con fines educativos.
-
