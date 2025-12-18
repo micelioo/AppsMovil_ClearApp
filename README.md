@@ -29,8 +29,6 @@ La app permite a los usuarios iniciar sesión, gestionar tareas con prioridades 
 - Manejo de estados con ViewModel + Coroutines
 - UI moderna con Jetpack Compose
 
-## Arquitectura del proyecto
-
 <h2>Arquitectura del proyecto</h2>
 
 <h3> Frontend (Android Studio)</h3>
@@ -58,7 +56,6 @@ src/main/java/
 ├── repository/   JPA Repositories
 └── model/        Entidades JPA
 </pre>
-
 
 ## Endpoints principales (Backend)
 POST /api/usuarios/login
@@ -151,3 +148,4 @@ Las contribuciones son bienvenidas:
 
 ## Licencia
 Proyecto académico desarrollado con fines educativos.
+
